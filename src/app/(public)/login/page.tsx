@@ -68,7 +68,7 @@ export default function Login() {
         <div className="pb-8">
           
           <p className="mt-2 text-center text-sm text-gray-600">
-            Pas de compte? <Link href="/register" className="text-orange hover:underline">S'inscrire</Link>
+            Pas de compte ? <Link href="/register" className="text-orange hover:underline">S'inscrire</Link>
           </p>
         </div>
       </div>

@@ -20,8 +20,8 @@
   background-image: url('/img/bg-login.jpg');
 }
 
-@utility bg-register {
-  background-image: url('/img/bg-register.jpg');
+@utility bg-signin {
+  background-image: url('/img/bg-signin.jpg');
 }
 
 @media (prefers-color-scheme: dark) {
