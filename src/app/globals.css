@@ -3,14 +3,25 @@
 :root {
   --background: #fbfaf9;
   --foreground: ##1F1F1F;
-  --orange: #D3590B
+  --orange: #D3590B;
+  --grey-border: #E5E7EB;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-manrope);
-  --font-mono: var(--font-manrope);
+  --color-orange: var(--orange);
+  --color-grey-border: var(--grey-border);
+  --font-manrope: var(--font-manrope);
+  --font-inter: var(--font-inter);
+}
+
+@utility bg-login {
+  background-image: url('/img/bg-login.jpg');
+}
+
+@utility bg-register {
+  background-image: url('/img/bg-register.jpg');
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +34,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-inter);
 }
 

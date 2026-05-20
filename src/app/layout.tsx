@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Manrope} from "next/font/google";
+import { Manrope, Inter} from "next/font/google";
 import "./globals.css";
 
 const manrope = Manrope({
   variable: "--font-manrope",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -21,9 +26,9 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${manrope.variable} h-full antialiased`}
+      className={`${manrope.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col items-center">{children}</body>
+      <body className="min-h-full flex flex-col items-center font-inter">{children}</body>
     </html>
   );
 }
