@@ -1,3 +1,7 @@
+
+import Header from "../components/layout/header/page";
+import Footer from "../components/layout/footer/page";
+
 export default function ProtectedLayout({
   children,
 }: Readonly<{
@@ -5,9 +9,9 @@ export default function ProtectedLayout({
 }>) {
   return (
     <>
-    <div>with header</div>
-    {children}
-    <div>with footer</div>
+    <Header/>
+    <main className="max-w-360 flex-1">{children}</main>
+    <Footer />
     </>
   );
 }
