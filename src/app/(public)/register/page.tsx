@@ -1,7 +1,41 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image';
 
+import { useState } from 'react'
+import { registerAction } from '@/actions/auth'
+
 export default function Register() {
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+
+    const form = e.currentTarget
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value
+    const password = (form.elements.namedItem('password') as HTMLInputElement).value
+    const lastname = (form.elements.namedItem('lastname') as HTMLInputElement).value
+    const firstname = (form.elements.namedItem('firstname') as HTMLInputElement).value
+    const name = `${firstname} ${lastname}`
+
+    const formData = new FormData()
+    formData.append('email', email)
+    formData.append('password', password)
+    formData.append('name', name)
+    console.log('Form data:', formData)
+    const result = await registerAction(formData)
+
+    if (result?.success === false) {
+      setError(result.message)
+      setLoading(false)
+    }
+  }
+
   return (
     <main className="w-full bg-signin bg-cover bg-center">
       <div className="bg-background w-full md:w-140 
@@ -19,10 +53,39 @@ export default function Register() {
           />
         </div>
         <div className="flex-1 flex flex-col justify-center">
-          <h1 className="text-4xl text-orange font-manrope font-bold text-center">
+          <h1 className="text-4xl mb-4 text-orange font-manrope font-bold text-center">
             Inscription
           </h1>
-          <form className="w-70 mx-auto mt-8 gap-4 flex flex-col">
+          {error && (
+          <p className="text-red-600 font-bold text-center">{error}</p>
+          )}
+          <form onSubmit={handleSubmit} className="w-70 mx-auto mt-4 gap-4 flex flex-col">
+            <div className="mb-2">
+              <label htmlFor="lastname" className="block text-sm font-normal text-black">
+                Nom
+              </label>
+              <input
+                type="text"
+                id="lastname"
+                className="mt-1 p-2 block w-full 
+                border border-grey-border rounded-md 
+                focus:outline-none focus:ring-orange focus:border-orange"
+                placeholder="Votre nom"
+              />
+            </div>
+            <div className="mb-2">
+              <label htmlFor="firstname" className="block text-sm font-normal text-black">
+                Prénom
+              </label>
+              <input
+                type="text"
+                id="firstname"
+                className="mt-1 p-2 block w-full 
+                border border-grey-border rounded-md 
+                focus:outline-none focus:ring-orange focus:border-orange"
+                placeholder="Votre prénom"
+              />
+            </div>
             <div className="mb-2">
               <label htmlFor="email" className="block text-sm font-normal text-black">
                 Email

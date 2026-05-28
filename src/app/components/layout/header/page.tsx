@@ -4,11 +4,19 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useUser } from '@/context/UserContext'
 
 export default function Header() {
+  const { user } = useUser()
+  const name = user?.name ?? ''
+  const firstSpaceIndex = name.indexOf(' ')
+  const firstName = firstSpaceIndex >= 0 ? name.slice(0, firstSpaceIndex) : name
+  const lastName = firstSpaceIndex >= 0 ? name.slice(firstSpaceIndex + 1) : ''
+  const initials = user?.name
+    ? firstName.slice(0, 1).toUpperCase() + ' ' + lastName.slice(0, 1).toUpperCase()
+    : '?'
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
-  console.log('Current path:', pathname)
   return (
     <header className="w-full bg-white flex md:items-center justify-center">
       <div className="w-360 flex items-center justify-between px-6 h-20">
@@ -50,7 +58,7 @@ export default function Header() {
             ${pathname === '/profil' ? 'bg-orange text-white' : 'bg-orange/20 text-orange hover:bg-orange hover:text-white'}
             items-center justify-center 
             text-sm font-semibold`}>
-            AD
+            {initials}
           </Link>
 
           {/* Burger — mobile uniquement */}

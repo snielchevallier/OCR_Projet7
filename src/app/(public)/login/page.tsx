@@ -1,6 +1,45 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image';
-export default function Login() {
+
+import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { loginAction } from '@/actions/auth'
+
+export default function LoginPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') ?? '/dashboard'
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+
+    const form = e.currentTarget
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value
+    const password = (form.elements.namedItem('password') as HTMLInputElement).value
+    console.log('Form data:', email, password)
+    console.log('email:', email, 'password:', password) // vérifie ici
+
+    const formData = new FormData()
+    formData.append('email', email)
+    formData.append('password', password)
+
+    const result = await loginAction(formData)
+
+    // Si result est défini, c'est qu'il y a eu une erreur
+    // (en cas de succès, loginAction fait un redirect et ne retourne rien)
+    if (result?.success === false) {
+      setError(result.message)
+      setLoading(false)
+    }
+  }
+
   return (
 
     <main className="w-full bg-login bg-cover bg-center">
@@ -19,10 +58,13 @@ export default function Login() {
           />
         </div>
         <div className="flex-1 flex flex-col justify-center">
-          <h1 className="text-4xl text-orange font-manrope font-bold text-center">
+          <h1 className="text-4xl text-orange font-manrope mb-4 font-bold text-center">
             Connexion
           </h1>
-          <form className="w-70 mx-auto mt-8 gap-4 flex flex-col">
+          {error && (
+          <p className="text-red-600 font-bold text-center">{error}</p>
+          )}
+          <form onSubmit={handleSubmit} className="w-70 mx-auto mt-4 gap-4 flex flex-col">
             <div className="mb-2">
               <label htmlFor="email" className="block text-sm font-normal text-black">
                 Email
@@ -51,6 +93,7 @@ export default function Login() {
             </div>
             <button
               type="submit"
+              disabled={loading} 
               className="
               w-full py-2 px-4 
               bg-black text-white text-base font-medium
@@ -58,7 +101,7 @@ export default function Login() {
               hover:bg-orange/90 
               focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2"
             >
-              Se connecter
+              {loading ? 'Connexion...' : 'Se connecter'}
             </button>
           </form>
           <p className="mt-4 text-center text-sm text-gray-600">
