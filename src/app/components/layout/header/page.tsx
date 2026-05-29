@@ -105,7 +105,7 @@ export default function Header() {
               <span className={`flex items-center justify-center 
               px-2 mr-2 w-12 h-10 rounded-full 
               ${pathname === '/profil' ? 'bg-orange text-white' : 'bg-orange/20 text-orange hover:bg-orange hover:text-white'}`}
-              >AD</span> <span className="text-sm text-gray-600">Mon compte</span>
+              >{initials}</span> <span className="text-sm text-gray-600">Mon compte</span>
             </Link>
           </div>
         </nav>

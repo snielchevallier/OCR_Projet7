@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from 'react'
 export type User = {
   id: string
   email: string
-  name: string | null
+  name: string
   createdAt: string
   updatedAt: string
 }

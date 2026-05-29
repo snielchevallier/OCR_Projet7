@@ -4,18 +4,17 @@ import Link from 'next/link'
 import Image from 'next/image';
 
 import { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { loginAction } from '@/actions/auth'
 
 export default function LoginPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? '/dashboard'
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError(null)
@@ -23,17 +22,14 @@ export default function LoginPage() {
     const form = e.currentTarget
     const email = (form.elements.namedItem('email') as HTMLInputElement).value
     const password = (form.elements.namedItem('password') as HTMLInputElement).value
-    console.log('Form data:', email, password)
-    console.log('email:', email, 'password:', password) // vérifie ici
 
     const formData = new FormData()
     formData.append('email', email)
     formData.append('password', password)
+    formData.append('callbackUrl', callbackUrl)
 
     const result = await loginAction(formData)
 
-    // Si result est défini, c'est qu'il y a eu une erreur
-    // (en cas de succès, loginAction fait un redirect et ne retourne rien)
     if (result?.success === false) {
       setError(result.message)
       setLoading(false)
@@ -72,6 +68,7 @@ export default function LoginPage() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="mt-1 p-2 block w-full 
                 border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
@@ -85,6 +82,7 @@ export default function LoginPage() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 className="mt-1 p-2 block w-full 
                 border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"

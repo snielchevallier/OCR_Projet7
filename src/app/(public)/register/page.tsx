@@ -66,6 +66,7 @@ export default function Register() {
               <input
                 type="text"
                 id="lastname"
+                name="lastname"
                 className="mt-1 p-2 block w-full 
                 border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
@@ -79,6 +80,7 @@ export default function Register() {
               <input
                 type="text"
                 id="firstname"
+                name="firstname"
                 className="mt-1 p-2 block w-full 
                 border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
@@ -92,6 +94,7 @@ export default function Register() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="mt-1 p-2 block w-full 
                 border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
@@ -105,6 +108,7 @@ export default function Register() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 className="mt-1 p-2 block w-full 
                 border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"

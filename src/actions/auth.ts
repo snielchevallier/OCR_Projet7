@@ -7,7 +7,9 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error'
 export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-    
+  const callbackUrl = formData.get('callbackUrl') as string | null
+  const redirectTo = callbackUrl?.startsWith('/') ? callbackUrl : '/dashboard'
+
   try {
     if(!email || !password) {
       return {
@@ -15,8 +17,8 @@ export async function loginAction(formData: FormData) {
         message: 'Tous les champs sont requis',
       }
     }
-    const user = await login(email, password)
-    redirect('/dashboard')
+    await login(email, password)
+    redirect(redirectTo)
   } catch (err) {
     if (isRedirectError(err)) throw err
     return {
@@ -43,7 +45,7 @@ export async function registerAction(formData: FormData) {
     if (!passwordRegex.test(password)) {
       throw new Error('Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)')
     }
-    const user = await register(email, password, name)
+    await register(email, password, name)
     redirect('/dashboard')
   } catch (err) {
     if (isRedirectError(err)) throw err

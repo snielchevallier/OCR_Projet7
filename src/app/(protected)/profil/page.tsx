@@ -93,6 +93,7 @@ export default function Profil() {
           <label className="block text-sm font-medium text-black mb-1">Nom</label>
           <input
             type="text"
+            id="lastname"
             name="lastName"
             defaultValue={lastName}
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange"
@@ -103,6 +104,7 @@ export default function Profil() {
           <label className="block text-sm font-medium text-black mb-1">Prénom</label>
           <input
             type="text"
+            id="firstname"
             name="firstName"
             defaultValue={firstName}
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange"
@@ -113,6 +115,7 @@ export default function Profil() {
           <label className="block text-sm font-medium text-black mb-1">Email</label>
           <input
             type="email"
+            id="email"
             name="email"
             defaultValue={user?.email ?? ''}
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange"
@@ -123,6 +126,7 @@ export default function Profil() {
           <label className="block text-sm font-medium text-black mb-1">Mot de passe</label>
           <input
             type="password"
+            id="currentPassword"
             name="currentPassword"
             defaultValue=""
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange"
@@ -132,6 +136,7 @@ export default function Profil() {
           <label className="block text-sm font-medium text-black mb-1">Nouveau mot de passe</label>
           <input
             type="password"
+            id="newPassword"
             name="newPassword"
             defaultValue=""
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange"

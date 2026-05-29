@@ -3,7 +3,6 @@ import { cookies } from 'next/headers'
 const API_URL = process.env.BACKEND_API_URL
 
 export async function login(email: string, password: string) {
-  console.log('Tentative de login avec', { email, password })
   const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
