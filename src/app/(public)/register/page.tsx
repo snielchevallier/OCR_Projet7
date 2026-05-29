@@ -27,7 +27,6 @@ export default function Register() {
     formData.append('email', email)
     formData.append('password', password)
     formData.append('name', name)
-    console.log('Form data:', formData)
     const result = await registerAction(formData)
 
     if (result?.success === false) {

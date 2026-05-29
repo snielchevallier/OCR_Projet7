@@ -9,6 +9,12 @@ export async function loginAction(formData: FormData) {
   const password = formData.get('password') as string
     
   try {
+    if(!email || !password) {
+      return {
+        success: false,
+        message: 'Tous les champs sont requis',
+      }
+    }
     const user = await login(email, password)
     redirect('/dashboard')
   } catch (err) {
@@ -31,6 +37,11 @@ export async function registerAction(formData: FormData) {
         success: false,
         message: 'Tous les champs sont requis',
       }
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    if (!passwordRegex.test(password)) {
+      throw new Error('Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)')
     }
     const user = await register(email, password, name)
     redirect('/dashboard')
