@@ -5,16 +5,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@/context/UserContext'
+import { getUserInitials } from '@/lib/utils'
 
 export default function Header() {
   const { user } = useUser()
-  const name = user?.name ?? ''
-  const firstSpaceIndex = name.indexOf(' ')
-  const firstName = firstSpaceIndex >= 0 ? name.slice(0, firstSpaceIndex) : name
-  const lastName = firstSpaceIndex >= 0 ? name.slice(firstSpaceIndex + 1) : ''
-  const initials = user?.name
-    ? firstName.slice(0, 1).toUpperCase() + ' ' + lastName.slice(0, 1).toUpperCase()
-    : '?'
+  const initials = getUserInitials(user?.name)
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
   return (
@@ -33,18 +28,18 @@ export default function Header() {
             onClick={() => setMenuOpen(false)}
             className={`flex items-center gap-2 px-5 py-4 rounded-lg 
                 text-sm font-medium transition-colors duration-400
-                ${pathname === '/dashboard' ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}`}
+                ${pathname.startsWith('/dashboard') ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}`}
           >
-            <Image src={`/img/ico-dash-${pathname === '/dashboard' ? 'white' : 'orange'}.png`} alt="Tableau de bord" width={24} height={24} /> Tableau de bord
+            <Image src={`/img/ico-dash-${pathname.startsWith('/dashboard') ? 'white' : 'orange'}.png`} alt="Tableau de bord" width={24} height={24} /> Tableau de bord
           </Link>
           <Link
             href="/projets"
             onClick={() => setMenuOpen(false)}
             className={`flex items-center gap-2 px-5 py-4 rounded-lg 
                 text-sm font-medium transition-colors duration-400
-                ${pathname === '/projets' ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}`}
+                ${pathname.startsWith('/projets') ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}`}
           >
-            <Image src={`/img/ico-projets-${pathname === '/projets' ? 'white' : 'orange'}.png`} alt="Projets" width={24} height={24} /> Projets
+            <Image src={`/img/ico-projets-${pathname.startsWith('/projets') ? 'white' : 'orange'}.png`} alt="Projets" width={24} height={24} /> Projets
           </Link>
         </nav>
 
@@ -83,20 +78,20 @@ export default function Header() {
             onClick={() => setMenuOpen(false)}
             className={`flex items-center gap-2 px-5 py-4 rounded-lg 
                 text-sm font-medium transition-colors duration-400
-                ${pathname === '/dashboard' ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}
+                ${pathname.startsWith('/dashboard') ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}
                 `}
           >
-            <Image src={`/img/ico-dash-${pathname === '/dashboard' ? 'white' : 'orange'}.png`} alt="Tableau de bord" width={24} height={24} /> Tableau de bord
+            <Image src={`/img/ico-dash-${pathname.startsWith('/dashboard') ? 'white' : 'orange'}.png`} alt="Tableau de bord" width={24} height={24} /> Tableau de bord
           </Link>
           <Link
             href="/projets"
             onClick={() => setMenuOpen(false)}
             className={`flex items-center gap-2 px-5 py-4 rounded-lg 
                 text-sm font-medium transition-colors duration-400
-                ${pathname === '/projets' ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}
+                ${pathname.startsWith('/projets') ? 'bg-black text-white' : 'bg-white text-orange hover:text-orange hover:bg-orange/10'}
                 `}
           >
-            <Image src={`/img/ico-projets-${pathname === '/projets' ? 'white' : 'orange'}.png`} alt="Projets" width={24} height={24} /> Projets
+            <Image src={`/img/ico-projets-${pathname.startsWith('/projets') ? 'white' : 'orange'}.png`} alt="Projets" width={24} height={24} /> Projets
           </Link>
 
           {/* Avatar mobile */}
@@ -104,7 +99,7 @@ export default function Header() {
             <Link href="/profil" onClick={() => setMenuOpen(false)} className="flex items-center justify-center text-xs font-semibold text-orange">
               <span className={`flex items-center justify-center 
               px-2 mr-2 w-12 h-10 rounded-full 
-              ${pathname === '/profil' ? 'bg-orange text-white' : 'bg-orange/20 text-orange hover:bg-orange hover:text-white'}`}
+              ${pathname.startsWith('/profil') ? 'bg-orange text-white' : 'bg-orange/20 text-orange hover:bg-orange hover:text-white'}`}
               >{initials}</span> <span className="text-sm text-gray-600">Mon compte</span>
             </Link>
           </div>
