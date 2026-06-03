@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { Project } from '@/actions/projects'
-import { getUserInitials } from '@/lib/utils'
+import Image from 'next/image'
+import type { Project } from '@/types'
+import { getUserInitials, slugify } from '@/lib/utils'
 
 type Props = Project & {
   tasksTotal: number
@@ -13,7 +14,7 @@ export default function ProjectCard({ project }: { project: Props }) {
   const ownerInitials = getUserInitials(project.owner?.name).replace(' ', '')
 
   return (
-    <Link href={`/projets/${project.id}`} className="block h-full">
+    <Link href={`/projets/${slugify(project.name)}`} className="block h-full">
       <div className="bg-white rounded-2xl border border-grey-border p-6 flex flex-col h-full hover:shadow-md transition-shadow cursor-pointer">
 
         {/* Titre + description — flex-1 pousse le reste vers le bas */}
@@ -46,12 +47,7 @@ export default function ProjectCard({ project }: { project: Props }) {
         {/* Équipe */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5 text-xs text-gray-400">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+            <Image src="/img/ico-team.svg" alt="" width={12} height={11} />
             <span>Équipe ({1 + members.length})</span>
           </div>
 

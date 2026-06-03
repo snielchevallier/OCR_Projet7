@@ -1,16 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { createProjectAction } from '@/actions/projects'
+import { createProjectAction, searchUsersAction } from '@/actions/projects'
+import { getUserInitials } from '@/lib/utils'
+
+type UserResult = { id: string; email: string; name: string }
 
 export default function NewProjectModal() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [contributors, setContributors] = useState<UserResult[]>([])
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState<UserResult[]>([])
+  const [searching, setSearching] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
 
   const isValid = name.trim().length > 0 && description.trim().length > 0
 
@@ -21,11 +29,54 @@ export default function NewProjectModal() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
+  useEffect(() => {
+    if (!results.length) return
+    function onClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setResults([])
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [results.length])
+
+  useEffect(() => {
+    if (query.trim().length < 2) {
+      setResults([])
+      return
+    }
+    const timer = setTimeout(async () => {
+      setSearching(true)
+      try {
+        const users = await searchUsersAction(query)
+        setResults(users.filter(u => !contributors.some(c => c.id === u.id)))
+      } catch {
+        // ignore search errors silently
+      } finally {
+        setSearching(false)
+      }
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [query, contributors])
+
   function handleClose() {
     setOpen(false)
     setName('')
     setDescription('')
+    setContributors([])
+    setQuery('')
+    setResults([])
     setError(null)
+  }
+
+  function addContributor(user: UserResult) {
+    setContributors(prev => [...prev, user])
+    setResults([])
+    setQuery('')
+  }
+
+  function removeContributor(id: string) {
+    setContributors(prev => prev.filter(c => c.id !== id))
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -34,7 +85,11 @@ export default function NewProjectModal() {
     setLoading(true)
     setError(null)
     try {
-      await createProjectAction({ name, description })
+      await createProjectAction({
+        name,
+        description,
+        contributors: contributors.map(c => c.email),
+      })
       handleClose()
       router.refresh()
     } catch {
@@ -55,13 +110,8 @@ export default function NewProjectModal() {
 
       {open && (
         <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/40 z-40"
-            onClick={handleClose}
-          />
+          <div className="fixed inset-0 bg-black/40 z-40" onClick={handleClose} />
 
-          {/* Dialog */}
           <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
             <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl">
 
@@ -99,15 +149,67 @@ export default function NewProjectModal() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-black">Contributeurs</label>
-                  <button
-                    type="button"
-                    className="w-full flex justify-between items-center border border-grey-border rounded-lg px-4 py-3 text-sm text-gray-400"
-                  >
-                    Choisir un ou plusieurs collaborateurs
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </button>
+
+                  {contributors.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {contributors.map(c => (
+                        <span
+                          key={c.id}
+                          className="flex items-center gap-1.5 bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full"
+                        >
+                          <span className="w-5 h-5 rounded-full bg-gray-300 text-gray-600 text-[10px] flex items-center justify-center font-semibold shrink-0">
+                            {getUserInitials(c.name).replace(' ', '')}
+                          </span>
+                          {c.name || c.email}
+                          <button
+                            type="button"
+                            onClick={() => removeContributor(c.id)}
+                            className="ml-0.5 text-gray-400 hover:text-black leading-none"
+                            aria-label={`Retirer ${c.name}`}
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div ref={searchRef} className="relative">
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={e => setQuery(e.target.value)}
+                      placeholder="Rechercher par nom ou email..."
+                      className="w-full border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"
+                    />
+                    {searching && (
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                        ...
+                      </span>
+                    )}
+
+                    {results.length > 0 && (
+                      <ul className="absolute left-0 right-0 top-full mt-1 z-10 bg-white border border-grey-border rounded-lg shadow-lg overflow-hidden">
+                        {results.map(u => (
+                          <li key={u.id}>
+                            <button
+                              type="button"
+                              onClick={() => addContributor(u)}
+                              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left hover:bg-gray-50 transition-colors"
+                            >
+                              <span className="w-7 h-7 rounded-full bg-gray-200 text-gray-600 text-xs flex items-center justify-center font-semibold shrink-0">
+                                {getUserInitials(u.name).replace(' ', '')}
+                              </span>
+                              <span>
+                                <span className="font-medium text-black">{u.name}</span>
+                                <span className="text-gray-400 ml-2 text-xs">{u.email}</span>
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
 
                 {error && (

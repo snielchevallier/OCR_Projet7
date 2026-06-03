@@ -1,5 +1,7 @@
-import { Project, getProjectsAction, getProjectTasksAction } from '@/actions/projects'
-import ProjectCard from '@/app/components/ProjectCard'
+import type { Project } from '@/types'
+import { getProjectsAction } from '@/actions/projects'
+import { getProjectTasksAction } from '@/actions/tasks'
+import ProjectCard from '@/app/components/project/ProjectCard'
 import NewProjectModal from '@/app/components/modales/project/new'
 
 type ProjectWithProgress = Project & {
