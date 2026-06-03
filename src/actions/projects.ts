@@ -23,6 +23,30 @@ export async function createProjectAction(data: { name: string; description: str
   return res.data.project
 }
 
+export async function updateProjectAction(id: string, data: { name: string; description: string }) {
+  const res = await apiFetch<{ success: boolean; data: { project: Project } }>(`/projects/${id}`, {
+    method: 'PUT',
+    body: data,
+  })
+  revalidatePath('/projets')
+  return res.data.project
+}
+
+export async function addContributorAction(projectId: string, email: string) {
+  await apiFetch(`/projects/${projectId}/contributors`, {
+    method: 'POST',
+    body: { email },
+  })
+  revalidatePath('/projets')
+}
+
+export async function removeContributorAction(projectId: string, userId: string) {
+  await apiFetch(`/projects/${projectId}/contributors/${userId}`, {
+    method: 'DELETE',
+  })
+  revalidatePath('/projets')
+}
+
 export async function searchUsersAction(query: string): Promise<{ id: string; email: string; name: string }[]> {
   const res = await apiFetch<{ success: boolean; data: { users: { id: string; email: string; name: string }[] } }>(
     `/users/search?query=${encodeURIComponent(query)}`

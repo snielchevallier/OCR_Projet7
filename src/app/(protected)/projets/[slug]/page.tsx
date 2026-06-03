@@ -4,6 +4,7 @@ import { getProjectsAction, getProjectAction } from '@/actions/projects'
 import { getProjectTasksAction } from '@/actions/tasks'
 import { slugify, getUserInitials } from '@/lib/utils'
 import TasksList from '@/app/components/task/TasksList'
+import EditProjectModal from '@/app/components/modales/project/edit'
 
 export default async function ProjetDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -45,9 +46,7 @@ export default async function ProjetDetail({ params }: { params: Promise<{ slug:
           <div>
             <div className="flex items-center gap-3 mb-1">
               <h1 className="text-2xl font-bold text-black">{project.name}</h1>
-              <button className="text-sm text-orange underline-offset-2 hover:underline transition-colors">
-                Modifier
-              </button>
+              <EditProjectModal project={project} />
             </div>
             <p className="text-sm text-gray-500 max-w-xl">{project.description}</p>
           </div>

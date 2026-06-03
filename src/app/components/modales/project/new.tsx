@@ -79,7 +79,7 @@ export default function NewProjectModal() {
     setContributors(prev => prev.filter(c => c.id !== id))
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     if (!isValid) return
     setLoading(true)
