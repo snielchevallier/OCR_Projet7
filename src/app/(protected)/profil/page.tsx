@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useUser } from '@/context/UserContext'
 import { updateProfileAction, updatePasswordAction } from '@/actions/profile'
 import { logoutAction } from '@/actions/auth'
+import ConfirmModal from '@/app/components/modales/ConfirmModal'
 
 export default function Profil() {
   const { user, setUser } = useUser()
@@ -11,6 +12,7 @@ export default function Profil() {
   const firstSpaceIndex = name.indexOf(' ')
   const firstName = firstSpaceIndex >= 0 ? name.slice(0, firstSpaceIndex) : name
   const lastName = firstSpaceIndex >= 0 ? name.slice(firstSpaceIndex + 1) : ''
+  const [confirmLogout, setConfirmLogout] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -66,10 +68,11 @@ export default function Profil() {
     }
   }
 
-  async function handleLogout() {
-    confirm('Êtes-vous sûr de vouloir vous déconnecter ?') && (await logoutAction())
+  function handleLogout() {
+    setConfirmLogout(true)
   }
   return (
+    <>
     <div className="bg-white w-full max-w-303 flex flex-col
     mx-auto my-8 p-8
     rounded-xl border border-gray-200">
@@ -152,5 +155,15 @@ export default function Profil() {
         </div>
       </form>
     </div>
+
+    <ConfirmModal
+      open={confirmLogout}
+      onClose={() => setConfirmLogout(false)}
+      message="Êtes-vous sûr de vouloir vous déconnecter ?"
+      confirmLabel="Se déconnecter"
+      cancelLabel="Annuler"
+      onConfirm={logoutAction}
+    />
+    </>
   );
 }

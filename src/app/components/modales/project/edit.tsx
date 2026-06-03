@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@/context/UserContext'
 import {
   updateProjectAction,
   addContributorAction,
@@ -14,6 +15,7 @@ import { getUserInitials, slugify } from '@/lib/utils'
 type Contributor = { id: string; email: string; name: string }
 
 export default function EditProjectModal({ project }: { project: Project }) {
+  const { user } = useUser()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState(project.name)
@@ -97,6 +99,8 @@ export default function EditProjectModal({ project }: { project: Project }) {
   function removeContributor(id: string) {
     setContributors(prev => prev.filter(c => c.id !== id))
   }
+
+  if (user?.id !== project.ownerId) return null
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()

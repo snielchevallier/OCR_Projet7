@@ -23,6 +23,11 @@ export async function createProjectAction(data: { name: string; description: str
   return res.data.project
 }
 
+export async function deleteProjectAction(id: string) {
+  await apiFetch(`/projects/${id}`, { method: 'DELETE' })
+  revalidatePath('/projets')
+}
+
 export async function updateProjectAction(id: string, data: { name: string; description: string }) {
   const res = await apiFetch<{ success: boolean; data: { project: Project } }>(`/projects/${id}`, {
     method: 'PUT',

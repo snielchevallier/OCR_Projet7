@@ -5,6 +5,8 @@ import { getProjectTasksAction } from '@/actions/tasks'
 import { slugify, getUserInitials } from '@/lib/utils'
 import TasksList from '@/app/components/task/TasksList'
 import EditProjectModal from '@/app/components/modales/project/edit'
+import DeleteProjectButton from '@/app/components/modales/project/delete'
+import NewTaskModal from '@/app/components/modales/task/new'
 
 export default async function ProjetDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -47,15 +49,14 @@ export default async function ProjetDetail({ params }: { params: Promise<{ slug:
             <div className="flex items-center gap-3 mb-1">
               <h1 className="text-2xl font-bold text-black">{project.name}</h1>
               <EditProjectModal project={project} />
+              <DeleteProjectButton project={project} />
             </div>
             <p className="text-sm text-gray-500 max-w-xl">{project.description}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <button className="px-5 py-2.5 bg-black text-white text-sm font-medium rounded-lg hover:bg-orange transition-colors">
-            Créer une tâche
-          </button>
+          <NewTaskModal project={project} />
           <button className="flex items-center gap-2 px-4 py-2.5 bg-orange text-white text-sm font-medium rounded-lg hover:bg-orange/80 transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z" />
