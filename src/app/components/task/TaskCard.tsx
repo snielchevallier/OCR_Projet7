@@ -1,4 +1,4 @@
-import type { Task } from '@/types'
+import type { Task, Project } from '@/types'
 import { getUserInitials, formatDate } from '@/lib/utils'
 import CommentsSection from './CommentsSection'
 import TaskOptionsMenu from './TaskOptionsMenu'
@@ -15,7 +15,7 @@ const STATUS_STYLE: Record<Task['status'], string> = {
   DONE: 'bg-green-100 text-green-700',
 }
 
-export default function TaskCard({ task }: { task: Task }) {
+export default function TaskCard({ task, project }: { task: Task; project: Project }) {
   return (
     <div className="p-5">
       {/* Header */}
@@ -26,7 +26,7 @@ export default function TaskCard({ task }: { task: Task }) {
             {STATUS_LABEL[task.status]}
           </span>
         </div>
-        <TaskOptionsMenu />
+        <TaskOptionsMenu task={task} project={project} />
       </div>
 
       {/* Description */}

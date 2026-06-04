@@ -92,8 +92,8 @@ export default function NewProjectModal() {
       })
       handleClose()
       router.refresh()
-    } catch {
-      setError('Une erreur est survenue, veuillez réessayer.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue.')
     } finally {
       setLoading(false)
     }

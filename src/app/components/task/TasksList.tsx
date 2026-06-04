@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Task } from '@/types'
+import type { Task, Project } from '@/types'
 import TaskCard from './TaskCard'
 
 type StatusFilter = 'ALL' | Task['status']
@@ -13,7 +13,7 @@ const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
   { value: 'DONE', label: 'Terminé' },
 ]
 
-export default function TasksList({ tasks }: { tasks: Task[] }) {
+export default function TasksList({ tasks, project }: { tasks: Task[]; project: Project }) {
   const [view, setView] = useState<'liste' | 'calendrier'>('liste')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
   const [search, setSearch] = useState('')
@@ -103,7 +103,7 @@ export default function TasksList({ tasks }: { tasks: Task[] }) {
       ) : (
         <div className="divide-y divide-grey-border">
           {filtered.map(task => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard key={task.id} task={task} project={project} />
           ))}
         </div>
       )}

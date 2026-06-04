@@ -3,16 +3,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createTaskAction } from '@/actions/tasks'
-import type { Project, Task } from '@/types'
+import type { Project } from '@/types'
 import { getUserInitials } from '@/lib/utils'
 
 type Assignee = { id: string; name: string; email: string }
-
-const STATUS_OPTIONS: { value: Task['status']; label: string; activeStyle: string }[] = [
-  { value: 'TODO', label: 'À faire', activeStyle: 'bg-orange/20 text-orange border-orange/40' },
-  { value: 'IN_PROGRESS', label: 'En cours', activeStyle: 'bg-blue-100 text-blue-600 border-blue-300' },
-  { value: 'DONE', label: 'Terminée', activeStyle: 'bg-green-100 text-green-700 border-green-300' },
-]
 
 export default function NewTaskModal({ project }: { project: Project }) {
   const router = useRouter()
@@ -20,7 +14,6 @@ export default function NewTaskModal({ project }: { project: Project }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
-  const [status, setStatus] = useState<Task['status']>('TODO')
   const [assignees, setAssignees] = useState<Assignee[]>([])
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -57,7 +50,6 @@ export default function NewTaskModal({ project }: { project: Project }) {
     setTitle('')
     setDescription('')
     setDueDate('')
-    setStatus('TODO')
     setAssignees([])
     setDropdownOpen(false)
     setError(null)
@@ -81,13 +73,12 @@ export default function NewTaskModal({ project }: { project: Project }) {
         title,
         description,
         dueDate,
-        status,
         assigneeIds: assignees.map(a => a.id),
       })
       handleClose()
       router.refresh()
-    } catch {
-      setError('Une erreur est survenue, veuillez réessayer.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue.')
     } finally {
       setLoading(false)
     }
@@ -206,25 +197,7 @@ export default function NewTaskModal({ project }: { project: Project }) {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-black">Statut :</label>
-                  <div className="flex gap-2 flex-wrap">
-                    {STATUS_OPTIONS.map(opt => (
-                      <button
-                        key={opt.value}
-                        type="button"
-                        onClick={() => setStatus(opt.value)}
-                        className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all border ${
-                          status === opt.value ? opt.activeStyle : 'bg-gray-100 text-gray-400 border-transparent'
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {error && <p className="text-xs text-red-500">{error}</p>}
+{error && <p className="text-xs text-red-500">{error}</p>}
 
                 <button
                   type="submit"

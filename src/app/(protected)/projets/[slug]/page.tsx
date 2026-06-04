@@ -103,7 +103,7 @@ export default async function ProjetDetail({ params }: { params: Promise<{ slug:
       </div>
 
       {/* Tasks */}
-      <TasksList tasks={tasks} />
+      <TasksList tasks={tasks} project={project} />
     </div>
   )
 }

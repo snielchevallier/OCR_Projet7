@@ -36,7 +36,10 @@ export async function apiFetch<T>(endpoint: string, options: ApiOptions = {}): P
 
   if (!res.ok) {
     const data = await res.json().catch(() => ({}))
-    throw new ApiError(res.status, data.message ?? `Erreur ${res.status}`)
+    const details = Array.isArray(data.errors) && data.errors.length > 0
+      ? ` — ${data.errors.join(', ')}`
+      : ''
+    throw new ApiError(res.status, `${data.message ?? `Erreur ${res.status}`}${details}`)
   }
 
   return res.json() as Promise<T>
