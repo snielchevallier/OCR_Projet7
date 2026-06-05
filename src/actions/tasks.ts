@@ -17,6 +17,7 @@ export async function updateTaskAction(
     description: string
     dueDate: string
     status: Task['status']
+    priority?: Task['priority']
     assigneeIds?: string[]
   }
 ) {
@@ -39,6 +40,7 @@ export async function createTaskAction(
     title: string
     description: string
     dueDate: string
+    priority?: Task['priority']
     assigneeIds?: string[]
   }
 ) {

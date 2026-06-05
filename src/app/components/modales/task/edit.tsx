@@ -22,6 +22,7 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
   const [description, setDescription] = useState(task.description ?? '')
   const [dueDate, setDueDate] = useState(task.dueDate?.slice(0, 10) ?? '')
   const [status, setStatus] = useState<Task['status']>(task.status)
+  const [priority, setPriority] = useState<Task['priority']>(task.priority ?? null)
   const [assignees, setAssignees] = useState<Assignee[]>(
     task.assignees.map(a => ({ id: a.user.id, name: a.user.name, email: a.user.email }))
   )
@@ -43,6 +44,7 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
     setDescription(task.description ?? '')
     setDueDate(task.dueDate?.slice(0, 10) ?? '')
     setStatus(task.status)
+    setPriority(task.priority ?? null)
     setAssignees(task.assignees.map(a => ({ id: a.user.id, name: a.user.name, email: a.user.email })))
     setError(null)
   }, [open])
@@ -85,6 +87,7 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
         description,
         dueDate,
         status,
+        priority,
         assigneeIds: assignees.map(a => a.id),
       })
       onClose()
@@ -218,6 +221,20 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-black">Priorité</label>
+              <select
+                value={priority ?? ''}
+                onChange={e => setPriority((e.target.value || null) as Task['priority'])}
+                className="w-full border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"
+              >
+                <option value="">— Choisir une priorité</option>
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+              </select>
             </div>
 
             {error && <p className="text-xs text-red-500">{error}</p>}

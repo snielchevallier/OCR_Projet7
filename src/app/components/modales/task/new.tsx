@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createTaskAction } from '@/actions/tasks'
-import type { Project } from '@/types'
+import type { Project, Task } from '@/types'
 import { getUserInitials } from '@/lib/utils'
 
 type Assignee = { id: string; name: string; email: string }
@@ -14,6 +14,7 @@ export default function NewTaskModal({ project }: { project: Project }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
+  const [priority, setPriority] = useState<Task['priority']>(null)
   const [assignees, setAssignees] = useState<Assignee[]>([])
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -50,6 +51,7 @@ export default function NewTaskModal({ project }: { project: Project }) {
     setTitle('')
     setDescription('')
     setDueDate('')
+    setPriority(null)
     setAssignees([])
     setDropdownOpen(false)
     setError(null)
@@ -73,6 +75,7 @@ export default function NewTaskModal({ project }: { project: Project }) {
         title,
         description,
         dueDate,
+        priority,
         assigneeIds: assignees.map(a => a.id),
       })
       handleClose()
@@ -195,6 +198,20 @@ export default function NewTaskModal({ project }: { project: Project }) {
                       </ul>
                     )}
                   </div>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium text-black">Priorité</label>
+                  <select
+                    value={priority ?? ''}
+                    onChange={e => setPriority((e.target.value || null) as Task['priority'])}
+                    className="w-full border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"
+                  >
+                    <option value="">— Choisir une priorité</option>
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                  </select>
                 </div>
 
 {error && <p className="text-xs text-red-500">{error}</p>}

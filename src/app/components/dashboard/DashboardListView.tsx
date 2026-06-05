@@ -1,7 +1,19 @@
 import type { DashboardTask } from '@/actions/dashboard'
 import DashboardTaskCard from './DashboardTaskCard'
 
+const PRIORITY_ORDER: Record<string, number> = { HIGH: 1, MEDIUM: 2, LOW: 3 }
+
+function sortByPriority(tasks: DashboardTask[]): DashboardTask[] {
+  return [...tasks].sort((a, b) => {
+    const pa = a.priority ? (PRIORITY_ORDER[a.priority] ?? 4) : 4
+    const pb = b.priority ? (PRIORITY_ORDER[b.priority] ?? 4) : 4
+    return pa - pb
+  })
+}
+
 export default function DashboardListView({ tasks }: { tasks: DashboardTask[] }) {
+  const sorted = sortByPriority(tasks)
+
   return (
     <div className="border border-grey-border rounded-2xl bg-white overflow-hidden p-4">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between px-4 md:px-8 py-8">
@@ -24,7 +36,7 @@ export default function DashboardListView({ tasks }: { tasks: DashboardTask[] })
       </div>
 
       <div className="px-4 md:px-8 pb-8 flex flex-col gap-4">
-        {tasks.map(task => (
+        {sorted.map(task => (
           <DashboardTaskCard key={task.id} task={task} variant="list" />
         ))}
       </div>

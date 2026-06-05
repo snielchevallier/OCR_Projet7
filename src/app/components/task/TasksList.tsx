@@ -6,6 +6,8 @@ import TaskCard from './TaskCard'
 
 type StatusFilter = 'ALL' | Task['status']
 
+const PRIORITY_ORDER: Record<string, number> = { HIGH: 1, MEDIUM: 2, LOW: 3 }
+
 const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
   { value: 'ALL', label: 'Tous les statuts' },
   { value: 'TODO', label: 'À faire' },
@@ -18,12 +20,18 @@ export default function TasksList({ tasks, project }: { tasks: Task[]; project: 
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL')
   const [search, setSearch] = useState('')
 
-  const filtered = tasks.filter(t => {
-    const matchStatus = statusFilter === 'ALL' || t.status === statusFilter
-    const q = search.toLowerCase()
-    const matchSearch = !q || t.title?.toLowerCase().includes(q) || t.description?.toLowerCase().includes(q)
-    return matchStatus && matchSearch
-  })
+  const filtered = tasks
+    .filter(t => {
+      const matchStatus = statusFilter === 'ALL' || t.status === statusFilter
+      const q = search.toLowerCase()
+      const matchSearch = !q || t.title?.toLowerCase().includes(q) || t.description?.toLowerCase().includes(q)
+      return matchStatus && matchSearch
+    })
+    .sort((a, b) => {
+      const pa = a.priority ? (PRIORITY_ORDER[a.priority] ?? 4) : 4
+      const pb = b.priority ? (PRIORITY_ORDER[b.priority] ?? 4) : 4
+      return pa - pb
+    })
 
   return (
     <div className="bg-white rounded-2xl border border-grey-border overflow-hidden">
