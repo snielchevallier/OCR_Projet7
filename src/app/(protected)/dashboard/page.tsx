@@ -1,13 +1,8 @@
-export default function Dashboard() {
-  return (
-    <div className="">
-      <main className="">
-        <div className="">
-          <h1 className="text-4xl font-bold text-center">
-            Dashboard page
-          </h1>
-        </div>
-      </main>
-    </div>
-  );
+import { getAssignedTasksAction } from '@/actions/dashboard'
+import DashboardContent from '@/app/components/dashboard/DashboardContent'
+
+export default async function Dashboard() {
+  const tasks = await getAssignedTasksAction().catch(() => [])
+
+  return <DashboardContent tasks={tasks} />
 }
