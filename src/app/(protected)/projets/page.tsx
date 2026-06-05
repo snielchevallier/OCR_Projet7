@@ -31,7 +31,7 @@ export default async function Projets() {
 
   return (
     <div className="w-full max-w-303 flex flex-col mx-auto my-8 p-8">
-      <div className="flex justify-between mb-6">
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between mb-6">
         <div>
           <h1 className="text-lg font-semibold text-black">Mes projets</h1>
           <p className="text-base text-gray-500">Gérez vos projets</p>

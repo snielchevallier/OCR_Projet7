@@ -13,12 +13,14 @@ export default function DashboardContent({ tasks }: { tasks: DashboardTask[] }) 
 
   return (
     <div className="w-full max-w-303 flex flex-col mx-auto my-8 p-8">
-      <div className="flex justify-between mb-6">
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between mb-6">
         <div>
           <h1 className="text-lg font-semibold text-black">Tableau de bord</h1>
           <p className="text-base text-gray-500">Bonjour {user?.name}, voici un aperçu de vos projets et tâches</p>
         </div>
-        <NewProjectModal />
+        <div>
+          <NewProjectModal />
+        </div>
       </div>
 
       <div className="flex gap-2 mb-6">
@@ -42,7 +44,7 @@ export default function DashboardContent({ tasks }: { tasks: DashboardTask[] }) 
         </button>
       </div>
 
-      {view === 'list' ? <DashboardListView tasks={tasks} /> : <DashboardKanbanView />}
+      {view === 'list' ? <DashboardListView tasks={tasks} /> : <DashboardKanbanView tasks={tasks} />}
     </div>
   )
 }
