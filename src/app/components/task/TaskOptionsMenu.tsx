@@ -16,6 +16,8 @@ export default function TaskOptionsMenu({ task, project }: Props) {
   const [open, setOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,8 +34,17 @@ export default function TaskOptionsMenu({ task, project }: Props) {
   if (user?.id !== task.creator?.id) return null
 
   async function handleDelete() {
-    await deleteTaskAction(task.projectId, task.id)
-    router.refresh()
+    setDeleteLoading(true)
+    setDeleteError(null)
+    try {
+      await deleteTaskAction(task.projectId, task.id)
+      setConfirmOpen(false)
+      router.refresh()
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : 'Une erreur est survenue')
+    } finally {
+      setDeleteLoading(false)
+    }
   }
 
   return (
@@ -79,11 +90,13 @@ export default function TaskOptionsMenu({ task, project }: Props) {
 
       <ConfirmModal
         open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
+        onClose={() => { setConfirmOpen(false); setDeleteError(null) }}
         message="Supprimer la tâche ?"
         confirmLabel="Supprimer"
         cancelLabel="Annuler"
         onConfirm={handleDelete}
+        error={deleteError ?? undefined}
+        loading={deleteLoading}
       />
     </>
   )

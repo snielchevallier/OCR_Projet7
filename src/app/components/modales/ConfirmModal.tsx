@@ -9,9 +9,11 @@ type Props = {
   confirmLabel: string
   cancelLabel: string
   onConfirm: () => void | Promise<void>
+  error?: string
+  loading?: boolean
 }
 
-export default function ConfirmModal({ open, onClose, message, confirmLabel, cancelLabel, onConfirm }: Props) {
+export default function ConfirmModal({ open, onClose, message, confirmLabel, cancelLabel, onConfirm, error, loading }: Props) {
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -38,18 +40,22 @@ export default function ConfirmModal({ open, onClose, message, confirmLabel, can
 
           <p className="text-base font-medium text-black mb-8 pr-6">{message}</p>
 
+          {error && <p className="text-xs text-red-500 mb-4">{error}</p>}
+
           <div className="flex gap-3 justify-end">
             <button
               onClick={onClose}
-              className="px-5 py-2.5 rounded-lg text-sm font-medium border border-grey-border text-gray-600 hover:bg-gray-50 transition-colors"
+              disabled={loading}
+              className="px-5 py-2.5 rounded-lg text-sm font-medium border border-grey-border text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
               {cancelLabel}
             </button>
             <button
-              onClick={async () => { await onConfirm(); onClose() }}
-              className="px-5 py-2.5 rounded-lg text-sm font-medium bg-black text-white hover:bg-orange transition-colors"
+              onClick={onConfirm}
+              disabled={loading}
+              className="px-5 py-2.5 rounded-lg text-sm font-medium bg-black text-white hover:bg-orange transition-colors disabled:opacity-50"
             >
-              {confirmLabel}
+              {loading ? 'Suppression...' : confirmLabel}
             </button>
           </div>
 

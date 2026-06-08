@@ -33,7 +33,9 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
 
   const allUsers: Assignee[] = [
     { id: project.owner.id, name: project.owner.name, email: project.owner.email },
-    ...(project.members ?? []).map(m => ({ id: m.userId, name: m.user.name, email: m.user.email })),
+    ...(project.members ?? [])
+      .filter(m => m.userId !== project.owner.id)
+      .map(m => ({ id: m.userId, name: m.user.name, email: m.user.email })),
   ]
 
   const isValid = title.trim().length > 0 && dueDate.length > 0
