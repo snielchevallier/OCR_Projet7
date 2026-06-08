@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createProjectAction, searchUsersAction } from '@/actions/projects'
 import { getUserInitials } from '@/lib/utils'
+import { validateProject } from '@/lib/validations'
 
 type UserResult = { id: string; email: string; name: string }
 
@@ -20,7 +21,8 @@ export default function NewProjectModal() {
   const [error, setError] = useState<string | null>(null)
   const searchRef = useRef<HTMLDivElement>(null)
 
-  const isValid = name.trim().length > 0 && description.trim().length > 0
+  const validationError = validateProject(name, description)
+  const isValid = validationError === null
 
   useEffect(() => {
     if (!open) return
@@ -81,7 +83,7 @@ export default function NewProjectModal() {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
-    if (!isValid) return
+    if (validationError) { setError(validationError); return }
     setLoading(true)
     setError(null)
     try {

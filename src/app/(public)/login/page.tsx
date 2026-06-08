@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { loginAction } from '@/actions/auth'
+import { validateLogin } from '@/lib/validations'
 
 export default function LoginPage() {
   const searchParams = useSearchParams()
@@ -22,6 +23,9 @@ export default function LoginPage() {
     const form = e.currentTarget
     const email = (form.elements.namedItem('email') as HTMLInputElement).value
     const password = (form.elements.namedItem('password') as HTMLInputElement).value
+
+    const validationError = validateLogin(email, password)
+    if (validationError) { setError(validationError); setLoading(false); return }
 
     const formData = new FormData()
     formData.append('email', email)
@@ -69,8 +73,9 @@ export default function LoginPage() {
                 type="email"
                 id="email"
                 name="email"
-                className="mt-1 p-2 block w-full 
-                border border-grey-border rounded-md 
+                required
+                className="mt-1 p-2 block w-full
+                border border-grey-border rounded-md
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre email"
               />
@@ -83,8 +88,9 @@ export default function LoginPage() {
                 type="password"
                 id="password"
                 name="password"
-                className="mt-1 p-2 block w-full 
-                border border-grey-border rounded-md 
+                required
+                className="mt-1 p-2 block w-full
+                border border-grey-border rounded-md
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre mot de passe"
               />

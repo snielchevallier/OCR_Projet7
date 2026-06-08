@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { updateTaskAction } from '@/actions/tasks'
 import type { Project, Task } from '@/types'
 import { getUserInitials } from '@/lib/utils'
+import { validateTask } from '@/lib/validations'
 
 type Assignee = { id: string; name: string; email: string }
 
@@ -38,7 +39,8 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
       .map(m => ({ id: m.userId, name: m.user.name, email: m.user.email })),
   ]
 
-  const isValid = title.trim().length > 0 && dueDate.length > 0
+  const validationError = validateTask(title, description, dueDate)
+  const isValid = validationError === null
 
   useEffect(() => {
     if (!open) return
@@ -79,7 +81,7 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
-    if (!isValid) return
+    if (validationError) { setError(validationError); return }
     setLoading(true)
     setError(null)
     try {

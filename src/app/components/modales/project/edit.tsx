@@ -11,6 +11,7 @@ import {
 } from '@/actions/projects'
 import type { Project } from '@/types'
 import { getUserInitials, slugify } from '@/lib/utils'
+import { validateProject } from '@/lib/validations'
 
 type Contributor = { id: string; email: string; name: string }
 
@@ -33,7 +34,8 @@ export default function EditProjectModal({ project }: { project: Project }) {
     [project.members]
   )
 
-  const isValid = name.trim().length > 0 && description.trim().length > 0
+  const validationError = validateProject(name, description)
+  const isValid = validationError === null
 
   useEffect(() => {
     if (!open) return
@@ -104,7 +106,7 @@ export default function EditProjectModal({ project }: { project: Project }) {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
-    if (!isValid) return
+    if (validationError) { setError(validationError); return }
     setLoading(true)
     setError(null)
     try {

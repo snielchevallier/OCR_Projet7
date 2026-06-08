@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 import { useState } from 'react'
 import { registerAction } from '@/actions/auth'
+import { validateRegister } from '@/lib/validations'
 
 export default function Register() {
 
@@ -22,6 +23,9 @@ export default function Register() {
     const lastname = (form.elements.namedItem('lastname') as HTMLInputElement).value
     const firstname = (form.elements.namedItem('firstname') as HTMLInputElement).value
     const name = `${firstname} ${lastname}`
+
+    const validationError = validateRegister(lastname, firstname, email, password)
+    if (validationError) { setError(validationError); setLoading(false); return }
 
     const formData = new FormData()
     formData.append('email', email)
@@ -67,8 +71,9 @@ export default function Register() {
                 type="text"
                 id="lastname"
                 name="lastname"
-                className="mt-1 p-2 block w-full 
-                border border-grey-border rounded-md 
+                required
+                className="mt-1 p-2 block w-full
+                border border-grey-border rounded-md
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre nom"
               />
@@ -81,8 +86,9 @@ export default function Register() {
                 type="text"
                 id="firstname"
                 name="firstname"
-                className="mt-1 p-2 block w-full 
-                border border-grey-border rounded-md 
+                required
+                className="mt-1 p-2 block w-full
+                border border-grey-border rounded-md
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre prénom"
               />
@@ -95,8 +101,9 @@ export default function Register() {
                 type="email"
                 id="email"
                 name="email"
-                className="mt-1 p-2 block w-full 
-                border border-grey-border rounded-md 
+                required
+                className="mt-1 p-2 block w-full
+                border border-grey-border rounded-md
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre email"
               />
@@ -109,8 +116,9 @@ export default function Register() {
                 type="password"
                 id="password"
                 name="password"
-                className="mt-1 p-2 block w-full 
-                border border-grey-border rounded-md 
+                required
+                className="mt-1 p-2 block w-full
+                border border-grey-border rounded-md
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre mot de passe"
               />
