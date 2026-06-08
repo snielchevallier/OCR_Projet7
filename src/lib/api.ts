@@ -21,15 +21,19 @@ export async function apiFetch<T>(endpoint: string, options: ApiOptions = {}): P
   const cookieStore = await cookies()
   const token = cookieStore.get('token')?.value
 
-  const res = await fetch(`${API_URL}${endpoint}`, {
-    method: options.method ?? 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    ...(options.body ? { body: JSON.stringify(options.body) } : {}),
-  })
-
+  let res: Response
+  try {
+    res = await fetch(`${API_URL}${endpoint}`, {
+      method: options.method ?? 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      ...(options.body ? { body: JSON.stringify(options.body) } : {}),
+    })
+  } catch {
+    throw new ApiError(503, 'Serveur inaccessible, veuillez réessayer plus tard')
+  }
   if (res.status === 401) {
     throw new ApiError(401, 'Session expirée, veuillez vous reconnecter')
   }

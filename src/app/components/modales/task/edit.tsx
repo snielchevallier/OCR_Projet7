@@ -80,7 +80,6 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
     if (!isValid) return
     setLoading(true)
     setError(null)
-    console.log('Updating task with data:', { title, description, dueDate, status, assigneeIds: assignees.map(a => a.id) })
     try {
       await updateTaskAction(task.projectId, task.id, {
         title,

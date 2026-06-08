@@ -44,7 +44,6 @@ export async function createTaskAction(
     assigneeIds?: string[]
   }
 ) {
-  console.log('Creating task with data:', data)
   const res = await apiFetch<{ success: boolean; data: { task: Task } }>(
     `/projects/${projectId}/tasks`,
     { method: 'POST', body: data }

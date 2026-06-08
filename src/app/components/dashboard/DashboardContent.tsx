@@ -7,7 +7,7 @@ import DashboardListView from './DashboardListView'
 import DashboardKanbanView from './DashboardKanbanView'
 import type { DashboardTask } from '@/actions/dashboard'
 
-export default function DashboardContent({ tasks }: { tasks: DashboardTask[] }) {
+export default function DashboardContent({ tasks, error }: { tasks: DashboardTask[], error?: string }) {
   const { user } = useUser()
   const [view, setView] = useState<'list' | 'kanban'>('list')
 
@@ -44,7 +44,10 @@ export default function DashboardContent({ tasks }: { tasks: DashboardTask[] }) 
         </button>
       </div>
 
-      {view === 'list' ? <DashboardListView tasks={tasks} /> : <DashboardKanbanView tasks={tasks} />}
+      {error
+        ? <p className="text-sm text-red-500 text-center mt-12">{error}</p>
+        : view === 'list' ? <DashboardListView tasks={tasks} /> : <DashboardKanbanView tasks={tasks} />
+      }
     </div>
   )
 }

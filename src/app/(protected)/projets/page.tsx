@@ -12,6 +12,7 @@ type ProjectWithProgress = Project & {
 
 export default async function Projets() {
   let projects: ProjectWithProgress[] = []
+  let error: string | undefined
 
   try {
     const raw = await getProjectsAction()
@@ -27,7 +28,9 @@ export default async function Projets() {
       const progress = tasksTotal > 0 ? Math.round((tasksCompleted / tasksTotal) * 100) : 0
       return { ...project, tasksTotal, tasksCompleted, progress }
     })
-  } catch { /* empty state */ }
+  } catch (err) {
+    error = err instanceof Error ? err.message : 'Erreur de chargement'
+  }
 
   return (
     <div className="w-full max-w-303 flex flex-col mx-auto my-8 p-8">
@@ -41,7 +44,9 @@ export default async function Projets() {
         </div>
       </div>
 
-      {projects.length === 0 ? (
+      {error ? (
+        <p className="text-sm text-red-500 text-center mt-12">{error}</p>
+      ) : projects.length === 0 ? (
         <p className="text-sm text-gray-400 text-center mt-12">Aucun projet pour le moment.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
