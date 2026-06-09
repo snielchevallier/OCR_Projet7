@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createProjectAction, searchUsersAction } from '@/actions/projects'
 import { getUserInitials } from '@/lib/utils'
 import { validateProject } from '@/lib/validations'
+import { useLoading } from '@/context/LoadingContext'
 
 type UserResult = { id: string; email: string; name: string }
 
@@ -17,7 +18,7 @@ export default function NewProjectModal() {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<UserResult[]>([])
   const [searching, setSearching] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const { isLoading, setLoading } = useLoading()
   const [error, setError] = useState<string | null>(null)
   const searchRef = useRef<HTMLDivElement>(null)
 
@@ -220,12 +221,12 @@ export default function NewProjectModal() {
 
                 <button
                   type="submit"
-                  disabled={!isValid || loading}
+                  disabled={!isValid || isLoading}
                   className="mt-1 px-6 py-3 rounded-lg text-sm font-medium transition-colors
                     disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed
                     enabled:bg-black enabled:text-white enabled:hover:bg-orange"
                 >
-                  {loading ? 'Création...' : 'Ajouter un projet'}
+                  {isLoading ? 'Création...' : 'Ajouter un projet'}
                 </button>
 
               </form>

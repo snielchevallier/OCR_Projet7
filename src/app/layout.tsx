@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Inter} from "next/font/google";
 import "./globals.css";
+import { LoadingProvider } from '@/context/LoadingContext'
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -28,7 +29,9 @@ export default function RootLayout({
       lang="fr"
       className={`${manrope.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col items-center font-inter">{children}</body>
+      <body className="min-h-full flex flex-col items-center font-inter">
+        <LoadingProvider>{children}</LoadingProvider>
+      </body>
     </html>
   );
 }

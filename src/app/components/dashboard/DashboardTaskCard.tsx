@@ -7,6 +7,7 @@ import type { Project, Task } from '@/types'
 import { getProjectAction } from '@/actions/projects'
 import { formatDate } from '@/lib/utils'
 import EditTaskModal from '@/app/components/modales/task/edit'
+import { useLoading } from '@/context/LoadingContext'
 
 type Props = {
   task: DashboardTask
@@ -27,7 +28,7 @@ const STATUS_STYLE: Record<DashboardTask['status'], string> = {
 
 export default function DashboardTaskCard({ task, variant }: Props) {
   const [project, setProject] = useState<Project | null>(null)
-  const [loading, setLoading] = useState(false)
+  const { isLoading, setLoading } = useLoading()
 
   async function handleOpen() {
     setLoading(true)
@@ -73,10 +74,10 @@ export default function DashboardTaskCard({ task, variant }: Props) {
   const viewButton = (
     <button
       onClick={handleOpen}
-      disabled={loading}
+      disabled={isLoading}
       className="bg-black text-white text-sm px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-60"
     >
-      {loading ? '...' : 'Voir'}
+      {isLoading ? '...' : 'Voir'}
     </button>
   )
 
@@ -110,10 +111,10 @@ export default function DashboardTaskCard({ task, variant }: Props) {
           {metadata}
           <button
             onClick={handleOpen}
-            disabled={loading}
+            disabled={isLoading}
             className="w-fit bg-black text-white text-sm px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-60"
           >
-            {loading ? '...' : 'Voir'}
+            {isLoading ? '...' : 'Voir'}
           </button>
         </div>
       )}

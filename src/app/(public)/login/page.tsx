@@ -7,12 +7,13 @@ import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { loginAction } from '@/actions/auth'
 import { validateLogin } from '@/lib/validations'
+import { useLoading } from '@/context/LoadingContext'
 
 export default function LoginPage() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? '/dashboard'
 
-  const [loading, setLoading] = useState(false)
+  const { isLoading, setLoading } = useLoading()
   const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -32,10 +33,10 @@ export default function LoginPage() {
     formData.append('password', password)
     formData.append('callbackUrl', callbackUrl)
 
-    const result = await loginAction(formData)
-
-    if (result?.success === false) {
-      setError(result.message)
+    try {
+      const result = await loginAction(formData)
+      if (result?.success === false) setError(result.message)
+    } finally {
       setLoading(false)
     }
   }
@@ -97,7 +98,7 @@ export default function LoginPage() {
             </div>
             <button
               type="submit"
-              disabled={loading} 
+              disabled={isLoading} 
               className="
               w-full py-2 px-4 
               bg-black text-white text-base font-medium
@@ -105,7 +106,7 @@ export default function LoginPage() {
               hover:bg-orange/90 
               focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2"
             >
-              {loading ? 'Connexion...' : 'Se connecter'}
+              {isLoading ? 'Connexion...' : 'Se connecter'}
             </button>
           </form>
           <p className="mt-4 text-center text-sm text-gray-600">

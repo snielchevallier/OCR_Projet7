@@ -6,10 +6,11 @@ import Image from 'next/image';
 import { useState } from 'react'
 import { registerAction } from '@/actions/auth'
 import { validateRegister } from '@/lib/validations'
+import { useLoading } from '@/context/LoadingContext'
 
 export default function Register() {
 
-  const [loading, setLoading] = useState(false)
+  const { isLoading, setLoading } = useLoading()
   const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -31,10 +32,11 @@ export default function Register() {
     formData.append('email', email)
     formData.append('password', password)
     formData.append('name', name)
-    const result = await registerAction(formData)
 
-    if (result?.success === false) {
-      setError(result.message)
+    try {
+      const result = await registerAction(formData)
+      if (result?.success === false) setError(result.message)
+    } finally {
       setLoading(false)
     }
   }
@@ -86,9 +88,8 @@ export default function Register() {
                 type="text"
                 id="firstname"
                 name="firstname"
-                required
-                className="mt-1 p-2 block w-full
-                border border-grey-border rounded-md
+                className="mt-1 p-2 block w-full 
+                border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre prénom"
               />
@@ -101,9 +102,8 @@ export default function Register() {
                 type="email"
                 id="email"
                 name="email"
-                required
-                className="mt-1 p-2 block w-full
-                border border-grey-border rounded-md
+                className="mt-1 p-2 block w-full 
+                border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre email"
               />
@@ -116,23 +116,23 @@ export default function Register() {
                 type="password"
                 id="password"
                 name="password"
-                required
-                className="mt-1 p-2 block w-full
-                border border-grey-border rounded-md
+                className="mt-1 p-2 block w-full 
+                border border-grey-border rounded-md 
                 focus:outline-none focus:ring-orange focus:border-orange"
                 placeholder="Votre mot de passe"
               />
             </div>
             <button
               type="submit"
+              disabled={isLoading}
               className="
-              w-full py-2 px-4 
+              w-full py-2 px-4
               bg-black text-white text-base font-medium
-              rounded-md 
-              hover:bg-orange/90 
+              rounded-md
+              hover:bg-orange/90
               focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2"
             >
-              S'inscrire
+              {isLoading ? 'Inscription...' : "S'inscrire"}
             </button>
           </form>
           <p className="mt-4 text-center text-sm text-gray-600">
