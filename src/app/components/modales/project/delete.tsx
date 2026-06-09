@@ -3,18 +3,18 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { deleteProjectAction } from '@/actions/projects'
-import { useUser } from '@/context/UserContext'
+import { useOwnership } from '@/hooks/useOwnership'
 import ConfirmModal from '@/app/components/modales/ConfirmModal'
 import type { Project } from '@/types'
 
 export default function DeleteProjectButton({ project }: { project: Project }) {
-  const { user } = useUser()
+  const isOwner = useOwnership(project.ownerId)
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  if (user?.id !== project.ownerId) return null
+  if (!isOwner) return null
 
   async function handleDelete() {
     setLoading(true)

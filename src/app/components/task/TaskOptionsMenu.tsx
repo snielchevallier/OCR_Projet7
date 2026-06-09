@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@/context/UserContext'
+import { useOwnership } from '@/hooks/useOwnership'
 import { deleteTaskAction } from '@/actions/tasks'
 import type { Task, Project } from '@/types'
 import EditTaskModal from '@/app/components/modales/task/edit'
@@ -11,7 +11,7 @@ import ConfirmModal from '@/app/components/modales/ConfirmModal'
 type Props = { task: Task; project: Project }
 
 export default function TaskOptionsMenu({ task, project }: Props) {
-  const { user } = useUser()
+  const isOwner = useOwnership(task.creator?.id)
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
@@ -31,7 +31,7 @@ export default function TaskOptionsMenu({ task, project }: Props) {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [open])
 
-  if (user?.id !== task.creator?.id) return null
+  if (!isOwner) return null
 
   async function handleDelete() {
     setDeleteLoading(true)

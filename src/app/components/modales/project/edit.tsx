@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@/context/UserContext'
+import { useOwnership } from '@/hooks/useOwnership'
 import {
   updateProjectAction,
   addContributorAction,
@@ -16,7 +16,7 @@ import { validateProject } from '@/lib/validations'
 type Contributor = { id: string; email: string; name: string }
 
 export default function EditProjectModal({ project }: { project: Project }) {
-  const { user } = useUser()
+  const isOwner = useOwnership(project.ownerId)
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState(project.name)
@@ -102,7 +102,7 @@ export default function EditProjectModal({ project }: { project: Project }) {
     setContributors(prev => prev.filter(c => c.id !== id))
   }
 
-  if (user?.id !== project.ownerId) return null
+  if (!isOwner) return null
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
