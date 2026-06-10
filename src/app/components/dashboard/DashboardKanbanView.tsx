@@ -26,6 +26,7 @@ export default function DashboardKanbanView({ tasks }: Props) {
           <button
             key={status}
             onClick={() => setActiveStatus(status)}
+            aria-pressed={activeStatus === status}
             className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-400 ${
               activeStatus === status
                 ? 'bg-orange/20 text-orange'

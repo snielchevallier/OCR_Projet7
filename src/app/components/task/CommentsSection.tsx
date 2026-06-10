@@ -49,6 +49,7 @@ export default function CommentsSection({ projectId, taskId }: Props) {
     <div>
       <button
         onClick={() => setExpanded(v => !v)}
+        aria-expanded={expanded}
         className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-black transition-colors"
       >
         <span>Commentaires{count !== null ? ` (${count})` : ''}</span>

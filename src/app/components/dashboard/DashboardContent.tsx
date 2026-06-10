@@ -26,6 +26,7 @@ export default function DashboardContent({ tasks, error }: { tasks: DashboardTas
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setView('list')}
+          aria-pressed={view === 'list'}
           className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-400 ${
             view === 'list' ? 'bg-orange/20 text-orange' : 'bg-white text-orange hover:bg-orange/10'
           }`}
@@ -35,6 +36,7 @@ export default function DashboardContent({ tasks, error }: { tasks: DashboardTas
         </button>
         <button
           onClick={() => setView('kanban')}
+          aria-pressed={view === 'kanban'}
           className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-400 ${
             view === 'kanban' ? 'bg-orange/20 text-orange' : 'bg-white text-orange hover:bg-orange/10'
           }`}

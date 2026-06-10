@@ -64,14 +64,16 @@ export default function TaskOptionsMenu({ task, project }: Props) {
         </button>
 
         {open && (
-          <div className="absolute right-0 top-full mt-1 z-50 min-w-32.5 rounded-lg bg-black shadow-lg overflow-hidden">
+          <div role="menu" className="absolute right-0 top-full mt-1 z-50 min-w-32.5 rounded-lg bg-black shadow-lg overflow-hidden">
             <button
+              role="menuitem"
               onClick={() => { setOpen(false); setEditOpen(true) }}
               className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-white/10 transition-colors"
             >
               Modifier
             </button>
             <button
+              role="menuitem"
               onClick={() => { setOpen(false); setConfirmOpen(true) }}
               className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-white/10 transition-colors"
             >

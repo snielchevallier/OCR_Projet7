@@ -47,9 +47,10 @@ export default function TasksList({ tasks, project }: { tasks: Task[]; project: 
           <div className="flex items-center rounded-lg border border-grey-border overflow-hidden text-sm">
             <button
               onClick={() => setView('liste')}
+              aria-pressed={view === 'liste'}
               className={`flex items-center gap-1.5 px-3.5 py-2 transition-colors ${view === 'liste' ? 'bg-black text-white' : 'text-gray-500 hover:bg-gray-50'}`}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
                 <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
               </svg>
@@ -57,6 +58,7 @@ export default function TasksList({ tasks, project }: { tasks: Task[]; project: 
             </button>
             <button
               onClick={() => setView('calendrier')}
+              aria-pressed={view === 'calendrier'}
               className={`flex items-center gap-1.5 px-3.5 py-2 transition-colors border-l border-grey-border ${view === 'calendrier' ? 'bg-black text-white' : 'text-gray-500 hover:bg-gray-50'}`}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
