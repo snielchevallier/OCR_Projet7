@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 import { updateTaskAction } from '@/actions/tasks'
 import type { Project, Task } from '@/types'
 import { getUserInitials } from '@/lib/utils'
@@ -31,6 +32,7 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const dialogRef = useFocusTrap(open)
 
   const allUsers: Assignee[] = [
     { id: project.owner.id, name: project.owner.name, email: project.owner.email },
@@ -113,7 +115,13 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
       <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
-        <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="edit-task-title"
+          className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl"
+        >
 
           <button
             onClick={onClose}
@@ -123,7 +131,7 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
             ✕
           </button>
 
-          <h2 className="text-2xl font-bold text-black mb-7">Modifier la tâche</h2>
+          <h2 id="edit-task-title" className="text-2xl font-bold text-black mb-7">Modifier la tâche</h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 

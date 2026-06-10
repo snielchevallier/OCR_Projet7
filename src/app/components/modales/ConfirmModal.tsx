@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 type Props = {
   open: boolean
@@ -14,6 +15,8 @@ type Props = {
 }
 
 export default function ConfirmModal({ open, onClose, message, confirmLabel, cancelLabel, onConfirm, error, loading }: Props) {
+  const dialogRef = useFocusTrap(open)
+
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -28,7 +31,13 @@ export default function ConfirmModal({ open, onClose, message, confirmLabel, can
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
       <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
-        <div className="bg-white rounded-2xl p-8 w-full max-w-sm relative shadow-xl">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-modal-message"
+          className="bg-white rounded-2xl p-8 w-full max-w-sm relative shadow-xl"
+        >
 
           <button
             onClick={onClose}
@@ -38,7 +47,7 @@ export default function ConfirmModal({ open, onClose, message, confirmLabel, can
             ✕
           </button>
 
-          <p className="text-base font-medium text-black mb-8 pr-6">{message}</p>
+          <p id="confirm-modal-message" className="text-base font-medium text-black mb-8 pr-6">{message}</p>
 
           {error && <p className="text-xs text-red-500 mb-4">{error}</p>}
 

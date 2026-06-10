@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 import { useRouter } from 'next/navigation'
 import { useOwnership } from '@/hooks/useOwnership'
 import {
@@ -28,6 +29,7 @@ export default function EditProjectModal({ project }: { project: Project }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const searchRef = useRef<HTMLDivElement>(null)
+  const dialogRef = useFocusTrap(open)
 
   const originalContributors = useMemo<Contributor[]>(
     () => (project.members ?? []).map(m => ({ id: m.userId, email: m.user.email, name: m.user.name })),
@@ -145,7 +147,13 @@ export default function EditProjectModal({ project }: { project: Project }) {
           <div className="fixed inset-0 bg-black/40 z-40" onClick={handleClose} />
 
           <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
-            <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl">
+            <div
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="edit-project-title"
+              className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl"
+            >
 
               <button
                 onClick={handleClose}
@@ -155,7 +163,7 @@ export default function EditProjectModal({ project }: { project: Project }) {
                 ✕
               </button>
 
-              <h2 className="text-2xl font-bold text-black mb-7">Modifier le projet</h2>
+              <h2 id="edit-project-title" className="text-2xl font-bold text-black mb-7">Modifier le projet</h2>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 

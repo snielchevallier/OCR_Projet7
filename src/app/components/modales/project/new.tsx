@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 import { createProjectAction, searchUsersAction } from '@/actions/projects'
 import { getUserInitials } from '@/lib/utils'
 import { validateProject } from '@/lib/validations'
@@ -21,6 +22,7 @@ export default function NewProjectModal() {
   const { isLoading, setLoading } = useLoading()
   const [error, setError] = useState<string | null>(null)
   const searchRef = useRef<HTMLDivElement>(null)
+  const dialogRef = useFocusTrap(open)
 
   const validationError = validateProject(name, description)
   const isValid = validationError === null
@@ -116,7 +118,13 @@ export default function NewProjectModal() {
           <div className="fixed inset-0 bg-black/40 z-40" onClick={handleClose} />
 
           <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
-            <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl">
+            <div
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="new-project-title"
+              className="bg-white rounded-2xl p-8 w-full max-w-lg relative shadow-xl"
+            >
 
               <button
                 onClick={handleClose}
@@ -126,7 +134,7 @@ export default function NewProjectModal() {
                 ✕
               </button>
 
-              <h2 className="text-2xl font-bold text-black mb-7">Créer un projet</h2>
+              <h2 id="new-project-title" className="text-2xl font-bold text-black mb-7">Créer un projet</h2>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
