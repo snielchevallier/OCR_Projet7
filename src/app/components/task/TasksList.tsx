@@ -72,6 +72,7 @@ export default function TasksList({ tasks, project }: { tasks: Task[]; project: 
           {/* Status filter */}
           <div className="relative">
             <select
+              aria-label="Filtrer par statut"
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value as StatusFilter)}
               className="appearance-none pl-3 pr-8 py-2 text-sm border border-grey-border rounded-lg text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-orange/30 cursor-pointer"
@@ -89,6 +90,7 @@ export default function TasksList({ tasks, project }: { tasks: Task[]; project: 
           <div className="relative">
             <input
               type="text"
+              aria-label="Rechercher une tâche"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Rechercher une tâche"

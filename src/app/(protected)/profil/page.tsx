@@ -93,7 +93,7 @@ export default function Profil() {
       {nochanges && <p className="text-yellow-600 font-bold mb-4">Aucune modification effectuée.</p>}
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-sm font-medium text-black mb-1">Nom</label>
+          <label htmlFor="lastname" className="block text-sm font-medium text-black mb-1">Nom</label>
           <input
             type="text"
             id="lastname"
@@ -104,7 +104,7 @@ export default function Profil() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-black mb-1">Prénom</label>
+          <label htmlFor="firstname" className="block text-sm font-medium text-black mb-1">Prénom</label>
           <input
             type="text"
             id="firstname"
@@ -115,7 +115,7 @@ export default function Profil() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-black mb-1">Email</label>
+          <label htmlFor="email" className="block text-sm font-medium text-black mb-1">Email</label>
           <input
             type="email"
             id="email"
@@ -126,7 +126,7 @@ export default function Profil() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-black mb-1">Mot de passe</label>
+          <label htmlFor="currentPassword" className="block text-sm font-medium text-black mb-1">Mot de passe</label>
           <input
             type="password"
             id="currentPassword"
@@ -136,7 +136,7 @@ export default function Profil() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-black mb-1">Nouveau mot de passe</label>
+          <label htmlFor="newPassword" className="block text-sm font-medium text-black mb-1">Nouveau mot de passe</label>
           <input
             type="password"
             id="newPassword"

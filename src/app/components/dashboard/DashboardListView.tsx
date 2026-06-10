@@ -24,6 +24,7 @@ export default function DashboardListView({ tasks }: { tasks: DashboardTask[] })
         <div className="relative">
           <input
             type="text"
+            aria-label="Rechercher une tâche"
             placeholder="Rechercher une tâche"
             className="text-sm border border-grey-border rounded-lg px-3 py-2 pl-9 outline-none w-full md:w-64"
             disabled

@@ -95,6 +95,7 @@ export default function CommentsSection({ projectId, taskId }: Props) {
           <form onSubmit={handleSubmit} className="flex gap-2 pt-1">
             <input
               type="text"
+              aria-label="Écrire un commentaire"
               value={content}
               onChange={e => setContent(e.target.value)}
               placeholder="Écrire un commentaire…"
