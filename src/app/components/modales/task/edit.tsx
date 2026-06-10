@@ -136,8 +136,9 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-black">Titre*</label>
+              <label htmlFor="task-edit-name" className="text-sm font-medium text-black">Titre*</label>
               <input
+                id="task-edit-name"
                 type="text"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
@@ -146,8 +147,9 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-black">Description*</label>
+              <label htmlFor="task-edit-desc" className="text-sm font-medium text-black">Description*</label>
               <input
+                id="task-edit-desc"
                 type="text"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
@@ -156,8 +158,9 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-black">Échéance*</label>
+              <label htmlFor="task-edit-due" className="text-sm font-medium text-black">Échéance*</label>
               <input
+                id="task-edit-due"
                 type="date"
                 value={dueDate}
                 onChange={e => setDueDate(e.target.value)}
@@ -166,10 +169,11 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-black">Assigné à :</label>
+              <label id="task-edit-assignee-label" className="text-sm font-medium text-black">Assigné à :</label>
               <div ref={dropdownRef} className="relative">
                 <button
                   type="button"
+                  aria-labelledby="task-edit-assignee-label"
                   onClick={() => setDropdownOpen(v => !v)}
                   className="w-full flex justify-between items-center border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"
                 >
@@ -216,8 +220,8 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-black">Statut :</label>
+            <div role="group" aria-labelledby="task-edit-status-label" className="flex flex-col gap-2">
+              <span id="task-edit-status-label" className="text-sm font-medium text-black">Statut :</span>
               <div className="flex gap-2 flex-wrap">
                 {STATUS_OPTIONS.map(opt => (
                   <button
@@ -235,8 +239,9 @@ export default function EditTaskModal({ task, project, open, onClose }: Props) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-black">Priorité</label>
+              <label htmlFor="task-edit-priority" className="text-sm font-medium text-black">Priorité</label>
               <select
+                id="task-edit-priority"
                 value={priority ?? ''}
                 onChange={e => setPriority((e.target.value || null) as Task['priority'])}
                 className="w-full border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"

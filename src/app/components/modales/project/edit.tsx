@@ -168,8 +168,9 @@ export default function EditProjectModal({ project }: { project: Project }) {
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Titre*</label>
+                  <label htmlFor="edit-project-name" className="text-sm font-medium text-black">Titre*</label>
                   <input
+                    id="edit-project-name"
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -178,8 +179,9 @@ export default function EditProjectModal({ project }: { project: Project }) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Description*</label>
+                  <label htmlFor="edit-project-desc" className="text-sm font-medium text-black">Description*</label>
                   <textarea
+                    id="edit-project-desc"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     rows={3}
@@ -188,7 +190,7 @@ export default function EditProjectModal({ project }: { project: Project }) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Contributeurs</label>
+                  <label htmlFor="edit-project-contributors" className="text-sm font-medium text-black">Contributeurs</label>
 
                   {contributors.length > 0 && (
                     <div className="flex flex-wrap gap-2">
@@ -216,6 +218,7 @@ export default function EditProjectModal({ project }: { project: Project }) {
 
                   <div ref={searchRef} className="relative">
                     <input
+                      id="edit-project-contributors"
                       type="text"
                       value={query}
                       onChange={e => setQuery(e.target.value)}

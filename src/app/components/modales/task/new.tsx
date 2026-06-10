@@ -132,8 +132,9 @@ export default function NewTaskModal({ project }: { project: Project }) {
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Titre*</label>
+                  <label htmlFor="task-new-name" className="text-sm font-medium text-black">Titre*</label>
                   <input
+                    id="task-new-name"
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
@@ -142,8 +143,9 @@ export default function NewTaskModal({ project }: { project: Project }) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Description*</label>
+                  <label htmlFor="task-new-desc" className="text-sm font-medium text-black">Description*</label>
                   <input
+                    id="task-new-desc"
                     type="text"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
@@ -152,8 +154,9 @@ export default function NewTaskModal({ project }: { project: Project }) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Échéance*</label>
+                  <label htmlFor="task-new-due" className="text-sm font-medium text-black">Échéance*</label>
                   <input
+                    id="task-new-due"
                     type="date"
                     value={dueDate}
                     onChange={e => setDueDate(e.target.value)}
@@ -162,10 +165,11 @@ export default function NewTaskModal({ project }: { project: Project }) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Assigné à :</label>
+                  <label id="task-new-assignee-label" className="text-sm font-medium text-black">Assigné à :</label>
                   <div ref={dropdownRef} className="relative">
                     <button
                       type="button"
+                      aria-labelledby="task-new-assignee-label"
                       onClick={() => setDropdownOpen(v => !v)}
                       className="w-full flex justify-between items-center border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"
                     >
@@ -213,8 +217,9 @@ export default function NewTaskModal({ project }: { project: Project }) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Priorité</label>
+                  <label htmlFor="task-new-priority" className="text-sm font-medium text-black">Priorité</label>
                   <select
+                    id="task-new-priority"
                     value={priority ?? ''}
                     onChange={e => setPriority((e.target.value || null) as Task['priority'])}
                     className="w-full border border-grey-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange/40"

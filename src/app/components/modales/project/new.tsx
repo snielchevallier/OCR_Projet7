@@ -139,8 +139,9 @@ export default function NewProjectModal() {
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Titre*</label>
+                  <label htmlFor="new-project-name" className="text-sm font-medium text-black">Titre*</label>
                   <input
+                    id="new-project-name"
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -149,8 +150,9 @@ export default function NewProjectModal() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Description*</label>
+                  <label htmlFor="new-project-desc" className="text-sm font-medium text-black">Description*</label>
                   <textarea
+                    id="new-project-desc"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     rows={3}
@@ -159,7 +161,7 @@ export default function NewProjectModal() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-black">Contributeurs</label>
+                  <label htmlFor="new-project-contributors" className="text-sm font-medium text-black">Contributeurs</label>
 
                   {contributors.length > 0 && (
                     <div className="flex flex-wrap gap-2">
@@ -187,6 +189,7 @@ export default function NewProjectModal() {
 
                   <div ref={searchRef} className="relative">
                     <input
+                      id="new-project-contributors"
                       type="text"
                       value={query}
                       onChange={e => setQuery(e.target.value)}
