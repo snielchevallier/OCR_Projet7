@@ -35,6 +35,11 @@ export default function ProjectCard({ project }: { project: Props }) {
           </div>
           <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div
+              role="progressbar"
+              aria-valuenow={project.progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={`Progression : ${project.progress}%`}
               className="h-full bg-orange rounded-full"
               style={{ width: `${project.progress}%` }}
             />
