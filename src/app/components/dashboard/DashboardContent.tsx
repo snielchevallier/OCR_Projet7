@@ -31,7 +31,7 @@ export default function DashboardContent({ tasks, error }: { tasks: DashboardTas
             view === 'list' ? 'bg-orange/20 text-orange' : 'bg-white text-orange hover:bg-orange/10'
           }`}
         >
-          <Image src="/img/ico-list.png" alt="Liste" width={12} height={12} />
+          <Image src="/img/ico-list.png" alt="" width={12} height={12} />
           Liste
         </button>
         <button
@@ -41,7 +41,7 @@ export default function DashboardContent({ tasks, error }: { tasks: DashboardTas
             view === 'kanban' ? 'bg-orange/20 text-orange' : 'bg-white text-orange hover:bg-orange/10'
           }`}
         >
-          <Image src="/img/ico-kanban.png" alt="Kanban" width={12} height={12} />
+          <Image src="/img/ico-kanban.png" alt="" width={12} height={12} />
           Kanban
         </button>
       </div>

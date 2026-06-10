@@ -202,8 +202,12 @@ export default function NewProjectModal() {
                       </span>
                     )}
 
+                    <span role="status" aria-live="polite" className="sr-only">
+                      {results.length > 0 ? `${results.length} résultat${results.length > 1 ? 's' : ''}` : ''}
+                    </span>
+
                     {results.length > 0 && (
-                      <ul className="absolute left-0 right-0 top-full mt-1 z-10 bg-white border border-grey-border rounded-lg shadow-lg overflow-hidden">
+                      <ul aria-label="Résultats de recherche" className="absolute left-0 right-0 top-full mt-1 z-10 bg-white border border-grey-border rounded-lg shadow-lg overflow-hidden">
                         {results.map(u => (
                           <li key={u.id}>
                             <button
