@@ -1,7 +1,7 @@
 'use server'
 
 import { apiFetch } from '@/lib/api'
-
+import { PASSWORD_REGEX } from '@/lib/validations'
 export type User = {
   id: string
   email: string
@@ -36,8 +36,7 @@ export async function updatePasswordAction(formData: FormData) {
     throw new Error('Le nouveau mot de passe doit être différent du mot de passe actuel')
   }
   
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  if (!passwordRegex.test(newPassword)) {
+  if (!PASSWORD_REGEX.test(newPassword)) {
     throw new Error('Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)')
   }
 

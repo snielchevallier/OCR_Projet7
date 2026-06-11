@@ -1,19 +1,8 @@
 import type { Task, Project } from '@/types'
 import { getUserInitials, formatDate } from '@/lib/utils'
+import { STATUS_LABEL, STATUS_STYLE } from '@/lib/constants'
 import CommentsSection from './CommentsSection'
 import TaskOptionsMenu from './TaskOptionsMenu'
-
-const STATUS_LABEL: Record<Task['status'], string> = {
-  TODO: 'À faire',
-  IN_PROGRESS: 'En cours',
-  DONE: 'Terminé',
-}
-
-const STATUS_STYLE: Record<Task['status'], string> = {
-  TODO: 'bg-orange/20 text-orange',
-  IN_PROGRESS: 'bg-blue-100 text-blue-600',
-  DONE: 'bg-green-100 text-green-700',
-}
 
 export default function TaskCard({ task, project }: { task: Task; project: Project }) {
   return (

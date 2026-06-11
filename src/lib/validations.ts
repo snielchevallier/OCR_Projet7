@@ -1,5 +1,5 @@
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function validateLogin(email: string, password: string): string | null {
   if (!email || !password) return 'Tous les champs sont requis'
